@@ -1558,3 +1558,9 @@ button {
     left: 25px !important;
   }
 }
+/* OCULTAR MENÚ DESPLEGABLE EN ESCRITORIO */
+@media (min-width: 761px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
