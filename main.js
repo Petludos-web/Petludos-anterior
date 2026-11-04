@@ -653,7 +653,37 @@ function productSection(title, items, link = true, kind = "generic") {
       : kind === "snacks"
         ? '<span class="home-category-chip"><span class="snack-icon" aria-hidden="true">✦</span>Snacks y premios</span>'
         : "";
-  return `<section class="section home-products home-products-${kind}"><div class="wrap"><div class="section-heading"><div><h2>${title}</h2>${chip}</div>${link && kind === "generic" ? '<a class="text-link" href="?view=productos" data-go="productos">Ver todos los productos</a>' : ""}</div><div class="home-carousel"><button class="product-arrow left" type="button" aria-label="Productos anteriores">‹</button>${grid(items)}<button class="product-arrow right" type="button" aria-label="Siguientes productos">›</button></div><div class="product-dots" aria-hidden="true"><span class="active"></span><span></span><span></span></div></div></section>`;
+
+  const carouselId = `carousel-${kind}`;
+
+  return `
+    <section class="section home-products home-products-${kind}">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <h2>${title}</h2>
+            ${chip}
+          </div>
+          ${link && kind === "generic"
+            ? '<a class="text-link" href="?view=productos" data-go="productos">Ver todos los productos</a>'
+            : ""}
+        </div>
+
+        <div class="home-carousel" data-carousel="${carouselId}">
+          <button class="product-arrow left" type="button"
+            data-carousel-move="-1" aria-label="Productos anteriores">‹</button>
+
+          <div class="product-grid" id="${carouselId}">
+            ${items.map(card).join("")}
+          </div>
+
+          <button class="product-arrow right" type="button"
+            data-carousel-move="1" aria-label="Siguientes productos">›</button>
+        </div>
+
+        <div class="product-dots" data-carousel-dots="${carouselId}"></div>
+      </div>
+    </section>`;
 }
 function newsletter() {
   return `<section class="newsletter"><div class="wrap newsletter-inner"><div><h2>¿Te gustaría recibir nuestras ofertas por email?</h2><p>Suscríbete a nuestro boletín y entérate antes que nadie de nuestros productos, descuentos y promociones especiales. ¡No te pierdas ninguna novedad para consentir a tu mascota!</p></div><form id="newsletterForm"><div class="newsletter-form"><input type="email" required placeholder="Tu correo electrónico" aria-label="Tu correo electrónico"><button class="btn btn-green">¡Quiero recibir ofertas!</button></div><label class="consent"><input type="checkbox" required><span>He leído y acepto la Política de privacidad y autorizo el envío de ofertas y promociones.</span></label></form></div></section>`;
@@ -664,12 +694,17 @@ function categoryTiles() {
 function home() {
   const hero = "./assets/Banner-principal.png";
   const lifestyle = "./assets/Gato-perro-crear-perfil.png";
-  return `<section class="hero"><img class="hero-image" src="${hero}" alt="Banner Petludos"><button class="hero-arrow left" aria-label="Banner anterior">‹</button><button class="hero-arrow right" aria-label="Siguiente banner">›</button><div class="dots"><span class="active"></span><span></span><span></span><span></span></div></section><section class="benefits"><div class="benefit"><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 10h24v17H4zM2 6h28v5H2zM13 11v16M19 11v16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16 6c-7-8-12 2-3 4m3-4c7-8 12 2 3 4" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><div><b>Delivery gratis</b><small>Por compras mayores a S/100</small></div></div><div class="benefit"><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 36 32"><path d="M2 6h20v17H2zM22 12h7l5 6v5H22z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="9" cy="25" r="3" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="28" cy="25" r="3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></span><div><b>Delivery express</b><small>En 2 horas</small></div></div></section><section class="section profile-promo wrap"><div class="profile-promo-image"><img src="${lifestyle}" alt="Perro y gato juntos" loading="lazy"></div><div class="profile-promo-copy"><h2>Crea el perfil de tu mascota</h2><p>Cuéntanos sobre tu mascota y crea su perfil con información como su edad, tamaño, características y necesidades.</p><p>Así podremos mostrarte <strong>productos recomendados especialmente para ella</strong>, ayudándote a encontrar lo que realmente necesita de forma más rápida y sencilla.</p><button class="btn btn-green" data-modal="profile">Crear perfil de mi mascota　›</button></div></section>${productSection(
+  return `<section class="hero"><img class="hero-image" src="${hero}" alt="Banner Petludos"><button class="hero-arrow left" aria-label="Banner anterior">‹</button><button class="hero-arrow right" aria-label="Siguiente banner">›</button><div class="dots"><span class="active"></span><span></span><span></span><span></span></div></section><section class="benefits"><div class="benefit"><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 10h24v17H4zM2 6h28v5H2zM13 11v16M19 11v16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M16 6c-7-8-12 2-3 4m3-4c7-8 12 2 3 4" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><div><b>Delivery gratis</b><small>Por compras mayores a S/100</small></div></div><div class="benefit"><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 36 32"><path d="M2 6h20v17H2zM22 12h7l5 6v5H22z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="9" cy="25" r="3" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="28" cy="25" r="3" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></span><div><b>Delivery express</b><small>En 2 horas</small></div></div></section><section class="section profile-promo wrap"><div class="profile-promo-image"><img src="${lifestyle}" alt="Perro y gato juntos" loading="lazy"></div><div class="profile-promo-copy"><h2>Crea el perfil de tu mascota</h2><p>Cuéntanos sobre tu mascota y crea su perfil con información como su edad, tamaño, características y necesidades.</p><p>Así podremos mostrarte <strong>productos recomendados especialmente para ella</strong>, ayudándote a encontrar lo que realmente necesita de forma más rápida y sencilla.</p><button class="btn btn-green" data-modal="profile">Crear perfil de mi mascota ›</button></div></section>${productSection(
     "Productos recomendados para Apolo",
-    products.filter((p) => ["f1", "f2", "f3", "f4"].includes(p.id)),
+    products.filter((p) => p.cat === "alimentos").slice(0, 12),
     false,
     "food",
-  )}${productSection("Snacks y premios", products.filter((p) => p.cat === "snacks").slice(0, 3), false, "snacks")}<section class="section"><div class="wrap"><div class="section-heading"><div><h2>Encuentra lo que necesita</h2><p>Explora las categorías y descubre productos seleccionados para tu compañero.</p></div><a class="text-link" href="?view=categorias" data-go="categorias">Ver todas las categorías</a></div>${categoryTiles()}</div></section>${newsletter()}`;
+  )}${productSection(
+    "Snacks y premios",
+    products.filter((p) => p.cat === "snacks").slice(0, 12),
+    false,
+    "snacks"
+  )}<section class="section"><div class="wrap"><div class="section-heading"><div><h2>Encuentra lo que necesita</h2><p>Explora las categorías y descubre productos seleccionados para tu compañero.</p></div><a class="text-link" href="?view=categorias" data-go="categorias">Ver todas las categorías</a></div>${categoryTiles()}</div></section>${newsletter()}`;
 }
 function categoriesPage() {
   return `<div class="wrap page-top"><div class="breadcrumbs"><a href="index.html" data-go="inicio">Inicio</a>　›　Productos</div><h1 class="page-title">Productos para tu mascota</h1><p class="page-desc">Explora nuestras categorías y encuentra productos seleccionados para Apolo. Cada recomendación considera las características y necesidades registradas en su perfil.</p></div><section class="section"><div class="wrap">${categoryTiles()}</div></section>${newsletter()}`;
@@ -719,7 +754,11 @@ function render() {
     if (gridEl)
       gridEl.innerHTML = grid(filteredProducts(cat, view === "promociones"));
   }
-  updateCartCount();
+    updateCartCount();
+
+  if (view === "inicio") {
+    initializeHomeCarousels();
+  }
 }
 function filteredProducts(cat, promos = false) {
   let list = products.filter((p) =>
@@ -780,6 +819,26 @@ function profileModal() {
 document.addEventListener("click", (e) => {
   const t = e.target.closest("button,a");
   if (!t) return;
+    if (t.id === "mobileMenuToggle") {
+    const nav = document.querySelector(".mainnav");
+    const isOpen = nav.classList.toggle("menu-open");
+
+    t.setAttribute("aria-expanded", String(isOpen));
+    return;
+  }
+
+  if (t.dataset.carouselMove) {
+    const carousel = t.closest(".home-carousel");
+    const grid = carousel?.querySelector(".product-grid");
+
+    if (grid) {
+      grid.scrollBy({
+        left: Number(t.dataset.carouselMove) * grid.clientWidth,
+        behavior: "smooth",
+      });
+    }
+    return;
+  }
   if (t.dataset.go) {
     e.preventDefault();
     go(t.dataset.go);
@@ -919,4 +978,52 @@ app.addEventListener("submit", (e) => {
   }
 });
 window.addEventListener("popstate", render);
+function initializeHomeCarousels() {
+  document.querySelectorAll(".home-carousel .product-grid").forEach((grid) => {
+    const dotsContainer = document.querySelector(
+      `[data-carousel-dots="${grid.id}"]`
+    );
+
+    if (!dotsContainer) return;
+
+    const cards = Array.from(grid.children);
+    const visibleCards = window.innerWidth <= 760 ? 2 : 4;
+    const pageCount = Math.ceil(cards.length / visibleCards);
+
+    dotsContainer.innerHTML = Array.from(
+      { length: pageCount },
+      (_, index) =>
+        `<button class="carousel-dot ${index === 0 ? "active" : ""}"
+          type="button" data-carousel-page="${index}"
+          data-carousel-target="${grid.id}"
+          aria-label="Mostrar grupo ${index + 1}"></button>`
+    ).join("");
+
+    grid.addEventListener("scroll", () => {
+      const pageWidth = grid.clientWidth;
+      const activePage = Math.round(grid.scrollLeft / pageWidth);
+
+      dotsContainer.querySelectorAll(".carousel-dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === activePage);
+      });
+    }, { passive: true });
+  });
+}
+
+document.addEventListener("click", (e) => {
+  const dot = e.target.closest("[data-carousel-page]");
+  if (!dot) return;
+
+  const grid = document.getElementById(dot.dataset.carouselTarget);
+  if (!grid) return;
+
+  grid.scrollTo({
+    left: Number(dot.dataset.carouselPage) * grid.clientWidth,
+    behavior: "smooth",
+  });
+});
+
+window.addEventListener("resize", () => {
+  if (currentView().view === "inicio") initializeHomeCarousels();
+});
 render();
